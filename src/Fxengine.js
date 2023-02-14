@@ -3,11 +3,8 @@
 /**
  * @author: aandrek (aa.ndrek.com)
  */
-
-const DEG2RAD = Math.PI / 180;
-
 export default class Fxengine {
-
+    DEG2RAD = Math.PI / 180;
     speeds = [4, 2, 1, 1/2, 1/4, 1/8, 1/16];
     clock = null; //referencia al clock main.
     bpm = 60;
@@ -110,7 +107,7 @@ export default class Fxengine {
         }
 
         let degs = 360 * easingFn(this.getCurrentFxWindowPercent(fxOffsetSeed, beatMeasure));
-        let p = (Math.cos(degs * DEG2RAD) + 1) / 2;
+        let p = (Math.cos(degs * this.DEG2RAD) + 1) / 2;
         return this.fxPercentInterpolation(minValue, maxValue, p);
 
     }
@@ -221,5 +218,3 @@ export default class Fxengine {
     }
 
 }
-
-module.exports = Fxengine;
