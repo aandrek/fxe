@@ -6,7 +6,6 @@
   "directories": {
     "test": "test"
   },
-  "private": true,
   "scripts": {
     "test": "test",
     "build": "webpack --config webpack.prod.js",
