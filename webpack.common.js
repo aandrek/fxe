@@ -6,5 +6,6 @@ module.exports = {
     path: path.resolve(__dirname, "./distdev"),
     clean: true,
     library: "Fxengine",
+    libraryTarget: 'umd'
   }
 };
