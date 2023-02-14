@@ -1,0 +1,24 @@
+{
+  "name": "fxe",
+  "version": "0.0.1",
+  "description": "A library to call functions in sync with a beat",
+  "main": "fxengine.js",
+  "directories": {
+    "test": "test"
+  },
+  "private": true,
+  "scripts": {
+    "test": "test",
+    "build": "webpack --config webpack.prod.js",
+    "watch": "webpack --config webpack.dev.js --watch",
+    "b": "webpack --config webpack.dev.js"
+  },
+  "author": "aandrek",
+  "license": "ISC",
+  "devDependencies": {
+    "three": "^0.149.0",
+    "webpack": "^5.72.0",
+    "webpack-cli": "^4.9.2",
+    "uglify-js": "^3.15.1"
+  }
+}
