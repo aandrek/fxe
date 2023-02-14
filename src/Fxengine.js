@@ -221,3 +221,5 @@ export default class Fxengine {
     }
 
 }
+
+module.exports = Fxengine;

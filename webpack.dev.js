@@ -4,7 +4,7 @@
 module.exports = merge(common, {
   entry: {
     test: "./test/test.js",
-    fxengine: "./src/index.js"
+    fxengine: "./src/Fxengine.js"
   },
   mode: "development",
   devtool: 'inline-source-map',

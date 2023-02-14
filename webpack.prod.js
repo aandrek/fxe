@@ -6,7 +6,7 @@ const path = require("path");
 module.exports = merge(common, {
   mode: "production",
   entry: {
-    fxengine: "./src/index.js"
+    fxengine: "./src/Fxengine.js"
   },
   output: {
     filename: "[name].bundle.js",
