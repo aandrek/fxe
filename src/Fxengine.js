@@ -1,4 +1,4 @@
-
+import { Clock } from "three";
 
 /**
  * @author: aandrek (aa.ndrek.com)
@@ -16,10 +16,17 @@ export default class Fxengine {
     // ---------------------------------------------------------------------------
 
     constructor(clock, bpm) {
-        this.clock = clock;
-        this.bpm = bpm;
+        if (clock !== undefined)
+            this.clock = clock;
+        else
+            this.clock = new Clock();
+        this.bpm = bpm ?? 120;
         this.setEffectWindow();
     };
+
+    getClock() {
+        return this.clock;
+    }
 
     // ---------------------------------------------------------------------------
 
