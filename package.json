@@ -2,7 +2,7 @@
   "name": "@aandrek/fxe",
   "version": "0.1.4",
   "description": "A library to call functions in sync with a beat",
-  "main": "fxengine.js",
+  "main": "dist/fxengine.bundle.js",
   "directories": {
     "test": "test"
   },
