@@ -2,8 +2,6 @@
   "name": "@aandrek/fxe",
   "version": "0.4.3",
   "description": "A library to call functions in sync with a beat",
-  "main": "dist/fxengine.bundle.js",
-  "module": "dist/fxengine.bundle.js",
   "scripts": {
     "test": "test",
     "build": "webpack --config webpack.prod.js",

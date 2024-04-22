@@ -238,5 +238,3 @@ export default class Fxengine {
     this.effectWindow = 60 / this.bpm;
   }
 }
-
-module.exports = Fxengine;
