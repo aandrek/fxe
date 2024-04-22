@@ -4,25 +4,25 @@ import { Clock } from "three";
  * @author: aandrek (aa.ndrek.com)
  */
 export default class Fxengine {
-  DEG2RAD = Math.PI / 180;
-  speeds = [4, 2, 1, 1 / 2, 1 / 4, 1 / 8, 1 / 16];
-  clock = null; //referencia al clock main.
-  bpm = 60;
-  effectWindow = null;
-  cache = [];
-  lastWindowIdentifier = 0;
-  cacheWindowIdentifiers = [];
+  public DEG2RAD = Math.PI / 180;
+  public speeds = [4, 2, 1, 1 / 2, 1 / 4, 1 / 8, 1 / 16];
+  public clock!: Clock; //referencia al clock main.
+  public bpm = 60;
+  public effectWindow: number = 0;
+  public cache = [];
+  public lastWindowIdentifier = 0;
+  public cacheWindowIdentifiers = [];
 
   // ---------------------------------------------------------------------------
 
-  constructor(clock, bpm) {
+  constructor(clock: Clock, bpm) {
     if (clock !== undefined) this.clock = clock;
     else this.clock = new Clock();
     this.bpm = bpm ?? 120;
     this.setEffectWindow();
   }
 
-  getClock() {
+  getClock(): Clock {
     return this.clock;
   }
 
@@ -34,7 +34,11 @@ export default class Fxengine {
    * @param {int} offsetPercentage Percentage (0-1) of offset to get it called
    * @param {float} beatMeasure Multiplier. For example if beatMeasure is 2, it gets called once every 2 complete. If is 1/2, it gets called twice in a BPM.
    */
-  fxBPMCallFn(fn, offsetPercentage, beatMeasure) {
+  public fxBPMCallFn(
+    fn: () => {},
+    offsetPercentage: number,
+    beatMeasure?: number
+  ): void {
     offsetPercentage = offsetPercentage ?? 0;
     beatMeasure = beatMeasure ?? 1;
     var id = this.getCurrentWindowIdentifier(offsetPercentage, beatMeasure);
@@ -53,7 +57,11 @@ export default class Fxengine {
 
   // ---------------------------------------------------------------------------
 
-  fxMidiInterpolation(minValue, maxValue, midiValue) {
+  public fxMidiInterpolation(
+    minValue: number,
+    maxValue: number,
+    midiValue: number
+  ): number {
     //y = min a max
     //x = 0 127
     //caso especial: si estamos pasando por ejemplo -100 y 100, querremos que cuando el midivalue esta en medio (63), el valor sea 0:
@@ -65,7 +73,11 @@ export default class Fxengine {
 
   // ---------------------------------------------------------------------------
 
-  fxPercentInterpolation(minValue, maxValue, percent) {
+  public fxPercentInterpolation(
+    minValue: number,
+    maxValue: number,
+    percent: number
+  ): number {
     //y = min a max
     //x = 0 100;
     return minValue + percent * (maxValue - minValue);
@@ -73,28 +85,28 @@ export default class Fxengine {
 
   // ---------------------------------------------------------------------------
 
-  fxBPMInterpolation(
-    minValue,
-    maxValue,
-    fxOffsetSeed,
-    beatMeasure,
-    easingFn,
-    loop
+  public fxBPMInterpolation(
+    minValue: number,
+    maxValue: number,
+    fxOffsetSeed?: number,
+    beatMeasure?: number,
+    easingFn?: (v: any) => any,
+    loop?: boolean
   ) {
-    if (typeof loop == "undefined") {
+    if (loop === undefined) {
       loop = true;
     }
 
-    if (typeof fxOffsetSeed == "undefined" || _.isNull(fxOffsetSeed)) {
+    if (fxOffsetSeed === undefined || fxOffsetSeed === null) {
       fxOffsetSeed = 0;
     }
 
-    if (typeof beatMeasure == "undefined" || _.isNull(beatMeasure)) {
+    if (beatMeasure === undefined || beatMeasure === null) {
       beatMeasure = 1;
     }
 
-    if (typeof easingFn == "undefined" || _.isNull(easingFn)) {
-      easingFn = (v) => {
+    if (easingFn === undefined || easingFn === null) {
+      easingFn = (v: any) => {
         return v;
       };
     }
@@ -112,23 +124,23 @@ export default class Fxengine {
 
   // ---------------------------------------------------------------------------
 
-  fxBPMWaveInterpolation(
-    minValue,
-    maxValue,
-    fxOffsetSeed,
-    beatMeasure,
-    easingFn
-  ) {
-    if (typeof fxOffsetSeed == "undefined" || _.isNull(fxOffsetSeed)) {
+  public fxBPMWaveInterpolation(
+    minValue: number,
+    maxValue: number,
+    fxOffsetSeed?: number,
+    beatMeasure?: number,
+    easingFn?: (v: any) => any
+  ): number {
+    if (fxOffsetSeed === undefined || fxOffsetSeed === null) {
       fxOffsetSeed = 0;
     }
 
-    if (typeof beatMeasure == "undefined" || _.isNull(beatMeasure)) {
-      beatMeasure = 2;
+    if (beatMeasure === undefined || beatMeasure === null) {
+      beatMeasure = 1;
     }
 
-    if (typeof easingFn == "undefined" || _.isNull(easingFn)) {
-      easingFn = (v) => {
+    if (easingFn === undefined || easingFn === null) {
+      easingFn = (v: any) => {
         return v;
       };
     }
@@ -147,12 +159,17 @@ export default class Fxengine {
    * @param {*} value2
    * @param {*} beatMeasure
    */
-  fxStrobe(value1, value2, fxOffset, beatMeasure) {
+  public fxStrobe(
+    value1: any,
+    value2: any,
+    fxOffset?: number,
+    beatMeasure?: number
+  ): any {
     //TODO, refinar...
 
-    var fxOffset = 0;
+    fxOffset = fxOffset ?? 0;
 
-    let perc = this.getCurrentFxWindowPercent(fxOffset, beatMeasure);
+    const perc = this.getCurrentFxWindowPercent(fxOffset, beatMeasure);
     if (perc < 0.5) {
       return value1;
     } else {
@@ -168,15 +185,14 @@ export default class Fxengine {
    * @param {*} value2
    * @param {*} beatMeasure
    */
-  fxBPMArrayValue(valuearray, fxOffset, beatMeasure) {
-    var fxOffset = 0;
-
-    let perc = this.getCurrentFxWindowPercent(fxOffset, beatMeasure);
-
-    let arrsize = valuearray.length;
-
-    let index = Math.floor(arrsize * perc);
-    return valuearray[index];
+  public fxBPMArrayValue(
+    valuearray: any[],
+    fxOffset?: number,
+    beatMeasure?: number
+  ) {
+    fxOffset = fxOffset ?? 0;
+    const perc = this.getCurrentFxWindowPercent(fxOffset, beatMeasure);
+    return valuearray[Math.floor(valuearray.length * perc)];
   }
 
   // ---------------------------------------------------------------------------
@@ -191,17 +207,21 @@ export default class Fxengine {
    *
    * Si le pasamos un beatMeasure, el efecto alcanzará el 100% cuando la ventana mida windowMultiplier * window
    */
-  getCurrentFxWindowPercent(offsetPercentage, beatMeasure, loop) {
+  public getCurrentFxWindowPercent(
+    offsetPercentage?: number,
+    beatMeasure?: number,
+    loop?: boolean
+  ): number {
     offsetPercentage = offsetPercentage ?? 0;
     beatMeasure = beatMeasure ?? 1;
 
-    if (typeof loop == "undefined") {
+    if (loop == undefined) {
       loop = true;
     }
 
     //La duracion del efecto es la misma que lo que dura cada beat.
 
-    var effectWindow = this.effectWindow;
+    let effectWindow = this.effectWindow;
     if (beatMeasure > 0) {
       effectWindow = 4 * beatMeasure * this.effectWindow;
     }
@@ -221,7 +241,10 @@ export default class Fxengine {
     }
   }
 
-  getCurrentWindowIdentifier(offsetPercentage, beatMeasure) {
+  public getCurrentWindowIdentifier(
+    offsetPercentage?: number,
+    beatMeasure?: number
+  ): number {
     offsetPercentage = offsetPercentage ?? 0;
     beatMeasure = beatMeasure ?? 1;
     var effectWindow = this.effectWindow;
@@ -234,7 +257,7 @@ export default class Fxengine {
     return Math.floor(elapsedTime / effectWindow);
   }
 
-  setEffectWindow() {
+  public setEffectWindow(): void {
     this.effectWindow = 60 / this.bpm;
   }
 }

@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "target": "ES6",
+    "module": "ES2022",
+    "moduleResolution": "node",
+    "typeRoots": ["src/ts/types", "node_modules/@types"],
+    "allowJs": true
+  }
+}
