@@ -1,6 +1,6 @@
 {
   "name": "@aandrek/fxe",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "description": "A library to call functions in sync with a beat",
   "main": "dist/index.ts",
   "types": "fxengine.d.ts",
