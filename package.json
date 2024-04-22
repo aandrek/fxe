@@ -1,8 +1,8 @@
 {
   "name": "@aandrek/fxe",
-  "version": "0.4.8",
+  "version": "0.4.9",
   "description": "A library to call functions in sync with a beat",
-  "main": "dist/fxengine.bundle.ts",
+  "main": "dist/fxengine.bundle.js",
   "types": "fxengine.d.ts",
   "scripts": {
     "test": "test",
