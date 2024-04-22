@@ -1,3 +1,5 @@
 /src
 /test
+/node_modules
 webpack.*.js
+.gitignore
