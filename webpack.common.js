@@ -7,6 +7,7 @@ module.exports = {
     clean: true,
     library: "Fxengine",
     libraryTarget: "umd",
+    globalObject: 'this',
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],

@@ -12,9 +12,9 @@ module.exports = merge(common, {
         filename: "[name].bundle.js",
         path: path.resolve(__dirname, "./dist"),
         clean: true,
-        library: {
-            type: "module", // Indicate ESM output
-        },
+        library: "Fxengine",
+        libraryTarget: "umd",
+        globalObject: 'this',
     },
     optimization: {
         minimize: true,
