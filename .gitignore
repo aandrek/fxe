@@ -6,6 +6,11 @@ dist/
 distdev/
 *.tsbuildinfo
 
+# Testing
+coverage/
+.nyc_output/
+*.lcov
+
 # IDE
 .vscode/
 .idea/

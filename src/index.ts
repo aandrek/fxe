@@ -1,4 +1,4 @@
-import Fxengine from "./Fxengine";
+import Fxengine from './Fxengine';
 
 export default Fxengine;
 export { Fxengine };

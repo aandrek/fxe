@@ -1,4 +1,4 @@
-import { Clock } from "three";
+import { Clock } from 'three';
 
 /**
  * @author: aandrek (aa.ndrek.com)
@@ -33,21 +33,14 @@ export default class Fxengine {
    * @param {int} offsetPercentage Percentage (0-1) of offset to get it called
    * @param {float} beatMeasure Multiplier. For example if beatMeasure is 2, it gets called once every 2 complete. If is 1/2, it gets called twice in a BPM.
    */
-  public fxBPMCallFn(
-    fn: () => void,
-    offsetPercentage: number,
-    beatMeasure?: number
-  ): void {
+  public fxBPMCallFn(fn: () => void, offsetPercentage: number, beatMeasure?: number): void {
     offsetPercentage = offsetPercentage ?? 0;
     beatMeasure = beatMeasure ?? 1;
     const id = this.getCurrentWindowIdentifier(offsetPercentage, beatMeasure);
     const key = `${offsetPercentage}-${beatMeasure}`;
-    if (
-      this.cacheWindowIdentifiers[key] === undefined ||
-      this.cacheWindowIdentifiers[key] !== id
-    ) {
+    if (this.cacheWindowIdentifiers[key] === undefined || this.cacheWindowIdentifiers[key] !== id) {
       this.cacheWindowIdentifiers[key] = id;
-      if (typeof fn === "function") {
+      if (typeof fn === 'function') {
         fn();
       }
     }
@@ -55,11 +48,7 @@ export default class Fxengine {
 
   // ---------------------------------------------------------------------------
 
-  public fxMidiInterpolation(
-    minValue: number,
-    maxValue: number,
-    midiValue: number
-  ): number {
+  public fxMidiInterpolation(minValue: number, maxValue: number, midiValue: number): number {
     //y = min a max
     //x = 0 127
     //caso especial: si estamos pasando por ejemplo -100 y 100, querremos que cuando el midivalue esta en medio (63), el valor sea 0:
@@ -71,11 +60,7 @@ export default class Fxengine {
 
   // ---------------------------------------------------------------------------
 
-  public fxPercentInterpolation(
-    minValue: number,
-    maxValue: number,
-    percent: number
-  ): number {
+  public fxPercentInterpolation(minValue: number, maxValue: number, percent: number): number {
     //y = min a max
     //x = 0 100;
     return minValue + percent * (maxValue - minValue);
@@ -113,10 +98,7 @@ export default class Fxengine {
     const posibleInc = maxValue - minValue;
     const res =
       minValue +
-      posibleInc *
-        easingFn(
-          this.getCurrentFxWindowPercent(fxOffsetSeed, beatMeasure, loop)
-        );
+      posibleInc * easingFn(this.getCurrentFxWindowPercent(fxOffsetSeed, beatMeasure, loop));
     return res;
   }
 
@@ -143,8 +125,7 @@ export default class Fxengine {
       };
     }
 
-    const degs =
-      360 * easingFn(this.getCurrentFxWindowPercent(fxOffsetSeed, beatMeasure));
+    const degs = 360 * easingFn(this.getCurrentFxWindowPercent(fxOffsetSeed, beatMeasure));
     const p = (Math.cos(degs * this.DEG2RAD) + 1) / 2;
     return this.fxPercentInterpolation(minValue, maxValue, p);
   }
@@ -157,12 +138,7 @@ export default class Fxengine {
    * @param {*} value2
    * @param {*} beatMeasure
    */
-  public fxStrobe(
-    value1: any,
-    value2: any,
-    fxOffset?: number,
-    beatMeasure?: number
-  ): any {
+  public fxStrobe(value1: any, value2: any, fxOffset?: number, beatMeasure?: number): any {
     //TODO, refinar...
 
     fxOffset = fxOffset ?? 0;
@@ -183,11 +159,7 @@ export default class Fxengine {
    * @param {*} value2
    * @param {*} beatMeasure
    */
-  public fxBPMArrayValue(
-    valuearray: any[],
-    fxOffset?: number,
-    beatMeasure?: number
-  ) {
+  public fxBPMArrayValue(valuearray: any[], fxOffset?: number, beatMeasure?: number) {
     fxOffset = fxOffset ?? 0;
     const perc = this.getCurrentFxWindowPercent(fxOffset, beatMeasure);
     return valuearray[Math.floor(valuearray.length * perc)];
@@ -239,10 +211,7 @@ export default class Fxengine {
     }
   }
 
-  public getCurrentWindowIdentifier(
-    offsetPercentage?: number,
-    beatMeasure?: number
-  ): number {
+  public getCurrentWindowIdentifier(offsetPercentage?: number, beatMeasure?: number): number {
     offsetPercentage = offsetPercentage ?? 0;
     beatMeasure = beatMeasure ?? 1;
     let effectWindow = this.effectWindow;
