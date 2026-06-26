@@ -3,16 +3,13 @@
 import { Clock } from "three";
 
 declare class Fxengine {
-  public DEG2RAD: number;
-  public speeds: number[];
+  public readonly DEG2RAD: number;
+  public readonly speeds: number[];
   public clock: Clock;
   public bpm: number;
   public effectWindow: number;
-  public cache: any[];
-  public lastWindowIdentifier: number;
-  public cacheWindowIdentifiers: any[];
 
-  constructor(clock: Clock, bpm: number);
+  constructor(clock?: Clock, bpm?: number);
 
   public getClock(): Clock;
 

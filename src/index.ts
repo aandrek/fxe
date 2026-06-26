@@ -1,3 +1,4 @@
 import Fxengine from "./Fxengine";
 
-module.exports = Fxengine;
+export default Fxengine;
+export { Fxengine };

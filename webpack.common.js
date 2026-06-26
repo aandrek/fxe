@@ -9,6 +9,14 @@ module.exports = {
     libraryTarget: "umd",
     globalObject: 'this',
   },
+  externals: {
+    three: {
+      commonjs: 'three',
+      commonjs2: 'three',
+      amd: 'three',
+      root: 'THREE'
+    }
+  },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
   },

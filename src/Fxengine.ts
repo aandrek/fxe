@@ -4,20 +4,19 @@ import { Clock } from "three";
  * @author: aandrek (aa.ndrek.com)
  */
 export default class Fxengine {
-  public DEG2RAD = Math.PI / 180;
-  public speeds = [4, 2, 1, 1 / 2, 1 / 4, 1 / 8, 1 / 16];
-  public clock!: Clock; //referencia al clock main.
-  public bpm = 60;
+  public readonly DEG2RAD = Math.PI / 180;
+  public readonly speeds = [4, 2, 1, 1 / 2, 1 / 4, 1 / 8, 1 / 16];
+  public clock: Clock;
+  public bpm: number;
   public effectWindow: number = 0;
-  public cache = [];
-  public lastWindowIdentifier = 0;
-  public cacheWindowIdentifiers = [];
+  private cache: any[] = [];
+  private lastWindowIdentifier: number = 0;
+  private cacheWindowIdentifiers: Record<string, number> = {};
 
   // ---------------------------------------------------------------------------
 
-  constructor(clock: Clock, bpm) {
-    if (clock !== undefined) this.clock = clock;
-    else this.clock = new Clock();
+  constructor(clock?: Clock, bpm?: number) {
+    this.clock = clock ?? new Clock();
     this.bpm = bpm ?? 120;
     this.setEffectWindow();
   }
@@ -35,21 +34,20 @@ export default class Fxengine {
    * @param {float} beatMeasure Multiplier. For example if beatMeasure is 2, it gets called once every 2 complete. If is 1/2, it gets called twice in a BPM.
    */
   public fxBPMCallFn(
-    fn: () => {},
+    fn: () => void,
     offsetPercentage: number,
     beatMeasure?: number
   ): void {
     offsetPercentage = offsetPercentage ?? 0;
     beatMeasure = beatMeasure ?? 1;
-    var id = this.getCurrentWindowIdentifier(offsetPercentage, beatMeasure);
+    const id = this.getCurrentWindowIdentifier(offsetPercentage, beatMeasure);
+    const key = `${offsetPercentage}-${beatMeasure}`;
     if (
-      typeof this.cacheWindowIdentifiers[
-        offsetPercentage + "-" + beatMeasure
-      ] == "undefined" ||
-      this.cacheWindowIdentifiers[offsetPercentage + "-" + beatMeasure] != id
+      this.cacheWindowIdentifiers[key] === undefined ||
+      this.cacheWindowIdentifiers[key] !== id
     ) {
-      this.cacheWindowIdentifiers[offsetPercentage + "-" + beatMeasure] = id;
-      if (typeof fn == "function") {
+      this.cacheWindowIdentifiers[key] = id;
+      if (typeof fn === "function") {
         fn();
       }
     }
@@ -112,8 +110,8 @@ export default class Fxengine {
     }
 
     //calculo el porcentaje de width que le sumaré a mi width
-    var posibleInc = maxValue - minValue;
-    let res =
+    const posibleInc = maxValue - minValue;
+    const res =
       minValue +
       posibleInc *
         easingFn(
@@ -145,9 +143,9 @@ export default class Fxengine {
       };
     }
 
-    let degs =
+    const degs =
       360 * easingFn(this.getCurrentFxWindowPercent(fxOffsetSeed, beatMeasure));
-    let p = (Math.cos(degs * this.DEG2RAD) + 1) / 2;
+    const p = (Math.cos(degs * this.DEG2RAD) + 1) / 2;
     return this.fxPercentInterpolation(minValue, maxValue, p);
   }
 
@@ -227,12 +225,12 @@ export default class Fxengine {
     }
 
     //elapsed time para ver cual es el tiempo global..hay que dividir este tiempo en trozos del tamaño "effectWindow"
-    var elapsedTime = this.clock.elapsedTime + effectWindow * offsetPercentage;
-    if (loop == true) {
+    const elapsedTime = this.clock.elapsedTime + effectWindow * offsetPercentage;
+    if (loop === true) {
       //porcentaje del effectWindow que llevamos con el elapsed time actual:
       return (elapsedTime % effectWindow) / effectWindow;
     } else {
-      var resttimes = this.clock.elapsedTime % this.effectWindow;
+      const resttimes = this.clock.elapsedTime % this.effectWindow;
       if (resttimes < this.effectWindow) {
         return (elapsedTime % effectWindow) / effectWindow;
       } else {
@@ -247,12 +245,12 @@ export default class Fxengine {
   ): number {
     offsetPercentage = offsetPercentage ?? 0;
     beatMeasure = beatMeasure ?? 1;
-    var effectWindow = this.effectWindow;
+    let effectWindow = this.effectWindow;
     if (beatMeasure > 0) {
       effectWindow = beatMeasure * this.effectWindow;
     }
 
-    var elapsedTime = Math.round(this.clock.elapsedTime * 1000) / 1000;
+    let elapsedTime = Math.round(this.clock.elapsedTime * 1000) / 1000;
     elapsedTime = elapsedTime + effectWindow * offsetPercentage;
     return Math.floor(elapsedTime / effectWindow);
   }

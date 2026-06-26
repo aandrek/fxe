@@ -1,6 +1,29 @@
+# Source files
 /src
 /test
-/node_modules
+
+# Development files
 webpack.*.js
-.gitignore
+webpack.common.js
 tsconfig.json
+.gitignore
+.git/
+
+# Dependencies
+/node_modules
+
+# Build artifacts
+/distdev
+*.tsbuildinfo
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs and temp files
+npm-debug.log*
+logs/
+*.log
+.DS_Store
